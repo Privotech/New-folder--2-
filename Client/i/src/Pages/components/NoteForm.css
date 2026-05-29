@@ -1,0 +1,399 @@
+.note-form-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 24px;
+}
+
+.note-form {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow:
+    0 1px 2px rgba(60, 64, 67, 0.3),
+    0 1px 3px rgba(60, 64, 67, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.note-form.focused {
+  box-shadow:
+    0 2px 4px rgba(60, 64, 67, 0.3),
+    0 8px 16px rgba(60, 64, 67, 0.15);
+  border-color: #4285f4;
+}
+
+.note-form.color-yellow {
+  background-color: #fbbc04;
+  color: #202124;
+}
+
+.note-form.color-blue {
+  background-color: #4285f4;
+  color: white;
+}
+
+.note-form.color-green {
+  background-color: #34a853;
+  color: white;
+}
+
+.note-form.color-pink {
+  background-color: #ea4335;
+  color: white;
+}
+
+.note-form.color-purple {
+  background-color: #a142f4;
+  color: white;
+}
+
+.note-form.color-yellow,
+.note-form.color-blue,
+.note-form.color-green,
+.note-form.color-pink,
+.note-form.color-purple {
+  border-color: transparent;
+}
+
+.note-title-input,
+.note-content-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  color: inherit;
+  resize: none;
+  font-size: 14px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.note-title-input {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  padding: 0;
+}
+
+.note-title-input:focus,
+.note-content-input:focus {
+  outline: none;
+}
+
+.note-title-input::placeholder,
+.note-content-input::placeholder {
+  color: rgba(32, 33, 36, 0.5);
+}
+
+.note-form.color-yellow .note-title-input::placeholder,
+.note-form.color-yellow .note-content-input::placeholder,
+.note-form.color-blue .note-title-input::placeholder,
+.note-form.color-blue .note-content-input::placeholder,
+.note-form.color-green .note-title-input::placeholder,
+.note-form.color-green .note-content-input::placeholder,
+.note-form.color-pink .note-title-input::placeholder,
+.note-form.color-pink .note-content-input::placeholder,
+.note-form.color-purple .note-title-input::placeholder,
+.note-form.color-purple .note-content-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.note-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.color-picker {
+  display: flex;
+  gap: 8px;
+}
+
+.color-option {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.color-option:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.color-option.selected {
+  border-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+  animation: colorSelect 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes colorSelect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.color-option.color-yellow {
+  background-color: #fbbc04;
+}
+
+.color-option.color-blue {
+  background-color: #4285f4;
+}
+
+.color-option.color-green {
+  background-color: #34a853;
+}
+
+.color-option.color-pink {
+  background-color: #ea4335;
+}
+
+.color-option.color-purple {
+  background-color: #a142f4;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-cancel {
+  background-color: transparent;
+  color: var(--text-primary);
+}
+
+.btn-cancel:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.btn-save {
+  background-color: var(--color-blue);
+  color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: #3367d6;
+  box-shadow: 0 2px 4px rgba(52, 168, 224, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-save:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-save:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.note-form.color-yellow .btn-cancel,
+.note-form.color-blue .btn-cancel,
+.note-form.color-green .btn-cancel,
+.note-form.color-pink .btn-cancel,
+.note-form.color-purple .btn-cancel {
+  color: white;
+}
+
+.note-form.color-yellow .btn-cancel:hover,
+.note-form.color-blue .btn-cancel:hover,
+.note-form.color-green .btn-cancel:hover,
+.note-form.color-pink .btn-cancel:hover,
+.note-form.color-purple .btn-cancel:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.note-form.color-yellow .btn-save,
+.note-form.color-blue .btn-save,
+.note-form.color-green .btn-save,
+.note-form.color-pink .btn-save,
+.note-form.color-purple .btn-save {
+  background-color: rgba(0, 0, 0, 0.15);
+  color: white;
+}
+
+.note-form.color-yellow .btn-save:hover,
+.note-form.color-blue .btn-save:hover,
+.note-form.color-green .btn-save:hover,
+.note-form.color-pink .btn-save:hover,
+.note-form.color-purple .btn-save:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 600px) {
+  .note-form-container {
+    max-width: 100%;
+  }
+
+  .note-form {
+    padding: 12px;
+  }
+
+  .note-form-footer {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .color-picker {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* Advanced Features */
+.note-form-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 8px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.btn-advanced-toggle {
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+}
+
+.btn-advanced-toggle:hover {
+  background: rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.advanced-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.option-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.option-group select,
+.option-group input {
+  padding: 8px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.option-group select:hover,
+.option-group input:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.option-group select:focus,
+.option-group input:focus {
+  outline: none;
+  border-color: #4285f4;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+}
+
+.image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.image-preview-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview-item img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.remove-image-btn:hover {
+  background: rgba(239, 68, 68, 0.8);
+}

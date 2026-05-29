@@ -1,7 +1,7 @@
 {
-  "name": "i",
+  "name": "privokeep",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "cloudinary": "^2.10.0",
+    "next-cloudinary": "^6.17.5",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },

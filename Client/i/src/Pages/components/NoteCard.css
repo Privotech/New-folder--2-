@@ -1,0 +1,457 @@
+.note-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow:
+    0 1px 2px rgba(60, 64, 67, 0.3),
+    0 1px 3px rgba(60, 64, 67, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+  animation: cardEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.note-card:hover:not(.editing) {
+  box-shadow:
+    0 4px 8px rgba(60, 64, 67, 0.3),
+    0 8px 16px rgba(60, 64, 67, 0.15);
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* Color variants */
+.note-card.color-yellow {
+  background-color: #fbbc04;
+  color: #202124;
+}
+
+.note-card.color-blue {
+  background-color: #4285f4;
+  color: white;
+}
+
+.note-card.color-green {
+  background-color: #34a853;
+  color: white;
+}
+
+.note-card.color-pink {
+  background-color: #ea4335;
+  color: white;
+}
+
+.note-card.color-purple {
+  background-color: #a142f4;
+  color: white;
+}
+
+.note-card.editing {
+  box-shadow:
+    0 2px 4px rgba(60, 64, 67, 0.3),
+    0 4px 8px rgba(60, 64, 67, 0.15);
+  z-index: 10;
+  border-color: #4285f4;
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.note-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  word-break: break-word;
+  flex: 1;
+}
+
+.pin-badge {
+  font-size: 16px;
+  flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.note-body {
+  flex: 1;
+  margin-bottom: 12px;
+  min-height: 60px;
+}
+
+.note-content {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  opacity: 0.9;
+}
+
+.note-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 12px;
+  padding: 2px 6px;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.note-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  gap: 8px;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.note-date {
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.note-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: actionsSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes actionsSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.note-card:hover .note-actions {
+  opacity: 1;
+}
+
+.note-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.note-action-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.3s,
+    height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.note-action-btn:active::before {
+  width: 200px;
+  height: 200px;
+}
+
+.note-action-btn:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+  transform: scale(1.15);
+}
+
+.note-action-btn.delete:hover {
+  background-color: rgba(234, 67, 53, 0.3);
+  color: #ea4335;
+}
+
+/* Edit mode */
+.edit-title {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
+}
+
+.edit-content {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-family: inherit;
+  color: inherit;
+  resize: none;
+  padding: 0;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.edit-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-footer .color-picker {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-footer .color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-footer .color-option:hover {
+  transform: scale(1.1);
+}
+
+.edit-footer .color-option.selected {
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.edit-footer .color-option.color-yellow {
+  background-color: #fbbc04;
+}
+
+.edit-footer .color-option.color-blue {
+  background-color: #4285f4;
+}
+
+.edit-footer .color-option.color-green {
+  background-color: #34a853;
+}
+
+.edit-footer .color-option.color-pink {
+  background-color: #ea4335;
+}
+
+.edit-footer .color-option.color-purple {
+  background-color: #a142f4;
+}
+
+.edit-footer .btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-footer .btn-cancel {
+  background-color: transparent;
+  color: inherit;
+}
+
+.edit-footer .btn-cancel:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.edit-footer .btn-save {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: inherit;
+}
+
+.edit-footer .btn-save:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .note-card {
+    min-height: 250px;
+  }
+
+  .note-actions {
+    opacity: 1;
+  }
+}
+
+/* Advanced Features */
+
+/* Priority Badge */
+.priority-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.priority-badge.priority-low {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+
+.priority-badge.priority-medium {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.priority-badge.priority-high {
+  background: rgba(255, 152, 0, 0.2);
+  color: #ff9800;
+}
+
+.priority-badge.priority-urgent {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+}
+
+/* Images */
+.note-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 6px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.note-image {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.image-overflow {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Due Date Badge */
+.due-date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* Category Badge */
+.category-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin-left: 4px;
+}
+
+/* Stack Badge */
+.stack-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* Favorite Heart Icon */
+.note-action-btn.favorited {
+  color: #f44336;
+}
+
+.note-action-btn.favorited svg {
+  fill: currentColor;
+}

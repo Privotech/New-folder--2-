@@ -1,10 +1,10 @@
 import "./App.css";
-import TodoApp from "./Pages/TodoApp";
+import PrivoKeep from "./Pages/PrivoKeep";
 
 function App() {
   return (
     <>
-      <TodoApp />
+      <PrivoKeep />
     </>
   );
 }

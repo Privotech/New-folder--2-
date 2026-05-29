@@ -1,203 +1,228 @@
-# Full-Stack Todo Application
+# PrivoKeep API Server
 
-A modern, feature-rich todo application built with React (Frontend) and Express + MongoDB (Backend).
+The backend API server for PrivoKeep - a beautiful Google Keep-style note-taking application.
 
 ## Features
 
-### Frontend Features
-
-- **Add/Edit/Delete Todos** - Manage your tasks easily
-- **Search & Filter** - Find todos by title or description
-- **Statistics Dashboard** - View progress, completion rate, and urgent tasks
-- **Dark Mode** - Easy on the eyes during night work
-- **Advanced Sorting** - Sort by priority, due date, or alphabetically
-- **Categories** - Organize todos by category
-- **Due Dates** - Set and track due dates with visual indicators
-- **Priority Levels** - Mark tasks as low, medium, or high priority
-- **Bulk Actions** - Select multiple todos and mark complete or delete
-- **Export Todos** - Download your todos as JSON
-- **Responsive Design** - Works on desktop, tablet, and mobile
-- **Real-time Updates** - Instant synchronization with backend
-
-### Backend Features
-
-- **MongoDB Integration** - Persistent data storage
-- **RESTful API** - Clean and scalable API endpoints
-- **Error Handling** - Comprehensive error management
-- **Database Indexing** - Optimized queries for performance
-- **Full CRUD Operations** - Complete todo management
+- **User Authentication** - Secure JWT-based authentication
+- **Note Management** - Full CRUD operations for notes
+- **Color Coding** - Support for 5 note colors
+- **Pinning & Archiving** - Organize notes efficiently
+- **Tag Support** - Add tags to notes for better organization
+- **Attachment Support** - Store file references with notes
+- **Collaboration** - Share notes with other users (with roles)
+- **Database Indexing** - Optimized MongoDB queries
+- **Error Handling** - Comprehensive error responses
 
 ## Tech Stack
 
-### Frontend
-
-- **React 19** - UI library
-- **Vite** - Lightning-fast build tool
-- **CSS3** - Modern styling with CSS variables
-
-### Backend
-
-- **Node.js** - Runtime environment
+- **Node.js** - JavaScript runtime
 - **Express.js** - Web framework
 - **MongoDB** - NoSQL database
-- **Mongoose** - ODM for MongoDB
-- **Dotenv** - Environment configuration
+- **Mongoose** - MongoDB ODM
+- **Bcryptjs** - Password hashing
+- **JWT** - Authentication tokens
 - **CORS** - Cross-origin support
+- **Dotenv** - Environment configuration
+- **Nodemon** - Development auto-reload
 
-## Getting Started
+## Installation
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- MongoDB (local or cloud instance)
+- Node.js v14 or higher
+- MongoDB (local or Atlas)
 - npm or yarn
 
-### Installation
+### Steps
 
-#### 1. Backend Setup
+1. Install dependencies:
 
-```bash
-cd rver
-npm install
+   ```bash
+   npm install
+   ```
+
+2. Create a `.env` file in the root directory:
+
+   ```env
+   MONGODB_URI=mongodb://localhost:27017/privokeep
+   JWT_SECRET=your_super_secret_key_change_me
+   PORT=5001
+   NODE_ENV=development
+   ```
+
+3. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+4. For production:
+   ```bash
+   npm start
+   ```
+
+The server will run on `http://localhost:5001`
+
+## API Endpoints
+
+### Authentication Routes (`/api/auth`)
+
+| Method | Endpoint    | Description       | Auth |
+| ------ | ----------- | ----------------- | ---- |
+| POST   | `/register` | Register new user | No   |
+| POST   | `/login`    | Login user        | No   |
+| POST   | `/logout`   | Logout user       | Yes  |
+
+### User Routes (`/api/users`)
+
+| Method | Endpoint | Description           | Auth |
+| ------ | -------- | --------------------- | ---- |
+| GET    | `/me`    | Get current user info | Yes  |
+| PUT    | `/me`    | Update user profile   | Yes  |
+| DELETE | `/me`    | Delete user account   | Yes  |
+
+### Note Routes (`/api/notes`)
+
+| Method | Endpoint       | Description           | Auth |
+| ------ | -------------- | --------------------- | ---- |
+| GET    | `/`            | Get all notes         | Yes  |
+| POST   | `/`            | Create new note       | Yes  |
+| GET    | `/:id`         | Get specific note     | Yes  |
+| PUT    | `/:id`         | Update note           | Yes  |
+| DELETE | `/:id`         | Delete note           | Yes  |
+| PATCH  | `/:id/pin`     | Toggle pin status     | Yes  |
+| PATCH  | `/:id/archive` | Toggle archive status | Yes  |
+
+### Project Routes (`/api/projects`)
+
+| Method | Endpoint | Description      | Auth |
+| ------ | -------- | ---------------- | ---- |
+| GET    | `/`      | Get all projects | Yes  |
+| POST   | `/`      | Create project   | Yes  |
+| PUT    | `/:id`   | Update project   | Yes  |
+| DELETE | `/:id`   | Delete project   | Yes  |
+
+### Reminder Routes (`/api/reminders`)
+
+| Method | Endpoint | Description       | Auth |
+| ------ | -------- | ----------------- | ---- |
+| GET    | `/`      | Get all reminders | Yes  |
+| POST   | `/`      | Create reminder   | Yes  |
+| PUT    | `/:id`   | Update reminder   | Yes  |
+| DELETE | `/:id`   | Delete reminder   | Yes  |
+
+## Database Models
+
+### User Model
+
+```json
+{
+  "_id": "ObjectId",
+  "email": "user@example.com",
+  "password": "hashed_password",
+  "name": "User Name",
+  "createdAt": "2024-01-01T00:00:00Z",
+  "updatedAt": "2024-01-01T00:00:00Z"
+}
 ```
 
-Create a `.env` file in the `rver` directory:
+### Note Model
 
-```env
-PORT=5001
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/?appName=YourApp
+```json
+{
+  "_id": "ObjectId",
+  "title": "Note Title",
+  "content": "Note content",
+  "userId": "ObjectId",
+  "projectId": "ObjectId (optional)",
+  "color": "yellow|blue|green|pink|purple",
+  "tags": ["tag1", "tag2"],
+  "isPinned": false,
+  "isArchived": false,
+  "attachments": [
+    {
+      "filename": "file.txt",
+      "url": "https://...",
+      "type": "text/plain",
+      "uploadedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "collaborators": [
+    {
+      "userId": "ObjectId",
+      "role": "viewer|editor"
+    }
+  ],
+  "createdAt": "2024-01-01T00:00:00Z",
+  "updatedAt": "2024-01-01T00:00:00Z"
+}
 ```
 
-Start the backend:
+## Authentication
 
-```bash
-npm run dev    # Development with nodemon
-npm start      # Production
+The API uses JWT (JSON Web Tokens) for authentication. Include the token in the Authorization header:
+
+```
+Authorization: Bearer <your_jwt_token>
 ```
 
-#### 2. Frontend Setup
+## Error Handling
 
-```bash
-cd Client/i
-npm install
-```
+The API returns standard HTTP status codes:
 
-Start the frontend:
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request
+- `401` - Unauthorized
+- `403` - Forbidden
+- `404` - Not Found
+- `500` - Internal Server Error
+
+All errors return a JSON response with an error message.
+
+## Middleware
+
+### Authentication Middleware
+
+Validates JWT tokens and attaches user info to requests.
+
+### Error Handler Middleware
+
+Catches and formats all application errors.
+
+## Database Indexing
+
+The models include strategic indexes for optimal query performance:
+
+- User email lookup
+- Note searches by userId and date
+- Pinned notes lookup
+
+## Environment Variables
+
+| Variable      | Description                | Example                               |
+| ------------- | -------------------------- | ------------------------------------- |
+| `MONGODB_URI` | MongoDB connection string  | `mongodb://localhost:27017/privokeep` |
+| `JWT_SECRET`  | Secret key for JWT signing | `your_secret_key`                     |
+| `PORT`        | Server port                | `5001`                                |
+| `NODE_ENV`    | Environment                | `development` or `production`         |
+
+## Development
+
+### Run with nodemon (auto-reload)
 
 ```bash
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173` (or the Vite default port)
+### Run in production mode
 
-## API Endpoints
-
-### Todos
-
-| Method | Endpoint                | Description              |
-| ------ | ----------------------- | ------------------------ |
-| GET    | `/api/todos`            | Get all todos            |
-| POST   | `/api/todos`            | Create new todo          |
-| GET    | `/api/todos/:id`        | Get specific todo        |
-| PUT    | `/api/todos/:id`        | Update todo              |
-| DELETE | `/api/todos/:id`        | Delete todo              |
-| PATCH  | `/api/todos/:id/toggle` | Toggle completion status |
-
-### Todo Object Schema
-
-```javascript
-{
-  _id: ObjectId,
-  title: String (required, max 200 chars),
-  description: String (max 1000 chars),
-  completed: Boolean,
-  priority: String (low/medium/high),
-  category: String,
-  dueDate: Date,
-  tags: [String],
-  notes: String,
-  userId: ObjectId (optional),
-  createdAt: Date,
-  updatedAt: Date
-}
+```bash
+npm start
 ```
 
-## Features in Detail
-
-### Search & Filter
-
-- Search by title or description in real-time
-- Filter by status (All, Active, Completed)
-- Filter by category
-- Sort by date, priority, due date, or alphabetically
-
-### Statistics Dashboard
-
-- Total todos count
-- Active (incomplete) todos
-- Completed todos
-- Urgent (high priority incomplete) todos
-- Completion percentage with visual progress bar
-
-### Dark Mode
-
-- Toggle between light and dark themes
-- Preference saved to localStorage
-- Smooth transitions
-
-### Bulk Actions
-
-- Select multiple todos with checkboxes
-- Mark selected todos as complete
-- Delete selected todos in batch
-
-### Visual Indicators
-
-- **Overdue todos** - Red border and pulse animation
-- **Priority badges** - Color-coded circles (low=green, medium=orange, high=red)
-- **Completion progress** - Visual progress bar
-- **Category badges** - Custom category labels
-
-### Export
-
-- Download all todos as JSON file
-- Includes all metadata (dates, priorities, categories, etc.)
-
-## Usage Tips
-
-1. **Quick Add** - Type in the search box and click "Add" for quick tasks
-2. **Advanced** - Click the settings button to access description, priority, category, and due date fields
-3. **Organize** - Use categories to group related tasks
-4. **Prioritize** - Mark important tasks as high priority for easy tracking
-5. **Track** - Check the statistics dashboard to monitor progress
-
-## Responsive Breakpoints
-
-- **Desktop** - Full-width layout with all features
-- **Tablet (768px and below)** - Adjusted spacing and layout
-- **Mobile (600px and below)** - Single-column layout, optimized touch targets
-
-## Notes
-
-- Currently no authentication (open for all users)
-- All todos stored in shared MongoDB
-- User-specific features can be added later
-
-## Future Enhancements
-
-- User authentication and authorization
-- Todo sharing and collaboration
-- Recurring tasks
-- Todo templates
-- Integration with calendar
-- Task reminders and notifications
-- Rich text editor for descriptions
-- Attachments support
-- Todo history and revisions
-
-## Development
-
-### Project Structure
+## Project Structure
 
 ```
 Client/i/

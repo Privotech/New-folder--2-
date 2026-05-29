@@ -12,6 +12,12 @@
   background: var(--secondary-bg);
   border-radius: 8px;
   border-left: 4px solid var(--primary-color);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.list-header:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .select-all-checkbox {
@@ -43,8 +49,20 @@
   background: var(--card-bg);
   border-radius: 10px;
   border-left: 4px solid var(--primary-color);
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 8px var(--shadow-color);
+  animation: todoEnter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes todoEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .todo-item:hover {
@@ -72,13 +90,23 @@
     box-shadow: 0 2px 8px var(--shadow-color);
   }
   50% {
-    box-shadow: 0 2px 15px #e74c3c40;
+    box-shadow: 0 2px 15px rgba(231, 76, 60, 0.4);
   }
 }
 
 .todo-item.selected {
   background: var(--selected-bg);
-  box-shadow: 0 0 0 3px var(--primary-color) 30;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+  animation: itemSelect 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes itemSelect {
+  from {
+    transform: scale(0.98);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 .todo-checkbox-wrapper {

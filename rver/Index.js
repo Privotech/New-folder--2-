@@ -12,6 +12,7 @@ const todoRoutes = require("./routes/todoRoutes");
 const noteRoutes = require("./routes/noteRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const reminderRoutes = require("./routes/reminderRoutes");
+const stackRoutes = require("./routes/stackRoutes");
 
 const port = process.env.PORT || 5001;
 
@@ -23,9 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.json({
-    message: "Welcome to the Comprehensive Productivity Platform API!",
-    version: "2.0",
-    modules: ["auth", "todos", "notes", "projects", "reminders"],
+    message: "Welcome to PrivoKeep API!",
+    version: "1.0",
+    modules: ["auth", "notes", "projects", "reminders", "stacks"],
   });
 });
 
@@ -36,10 +37,11 @@ app.use("/api/todos", todoRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/reminders", reminderRoutes);
+app.use("/api/stacks", stackRoutes);
 
 app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  console.log(`Productivity Platform v2.0 Active`);
+  console.log(`PrivoKeep v1.0 Active`);
 });
