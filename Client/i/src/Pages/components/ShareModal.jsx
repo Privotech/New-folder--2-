@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { UserIcon, ShareIcon, CopyIcon } from "./Icons";
 import "./ShareModal.css";
+
+export default function ShareModal({ noteId, isOpen, onClose, onShare }) {
   const [shareEmail, setShareEmail] = useState("");
   const [shareRole, setShareRole] = useState("viewer");
   const [shareLink, setShareLink] = useState("");

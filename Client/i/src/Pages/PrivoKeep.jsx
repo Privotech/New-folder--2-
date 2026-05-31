@@ -17,6 +17,11 @@ import {
   NoteIcon,
   HeartIcon,
   DownloadIcon,
+  FolderIcon,
+  FlagIcon,
+  PaletteIcon,
+  ChevronDownIcon,
+  ImageIcon,
 } from "./components/Icons";
 
 export default function PrivoKeep() {
@@ -42,6 +47,12 @@ export default function PrivoKeep() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [selectedNoteForShare, setSelectedNoteForShare] = useState(null);
   const [filters, setFilters] = useState({});
+  const [collapsedSections, setCollapsedSections] = useState({
+    notes: false,
+    category: false,
+    priority: false,
+    colors: false,
+  });
 
   const API_URL = "http://localhost:5001/api/notes";
   const STACKS_API_URL = "http://localhost:5001/api/stacks";
@@ -248,10 +259,10 @@ export default function PrivoKeep() {
         isFavorited: false,
         reminder: noteData.dueDate
           ? {
-              isSet: true,
-              dueDate: noteData.dueDate,
-              frequency: "once",
-            }
+            isSet: true,
+            dueDate: noteData.dueDate,
+            frequency: "once",
+          }
           : { isSet: false },
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -267,21 +278,6 @@ export default function PrivoKeep() {
       showToast("Failed to create note", "error");
     }
   };
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      const allNotes = JSON.parse(localStorage.getItem("notes") || "[]");
-      allNotes.unshift(newNote);
-      localStorage.setItem("notes", JSON.stringify(allNotes));
-
-      setNotes([newNote, ...notes]);
-      showToast("Note created successfully", "success");
-    } catch (error) {
-      console.error("Error creating note:", error);
-      showToast("Error creating note", "error");
-    }
-  };
 
   const updateNote = (id, title, content, color) => {
     try {
@@ -289,12 +285,12 @@ export default function PrivoKeep() {
       const updated = allNotes.map((note) =>
         note.id === id
           ? {
-              ...note,
-              title: title || "Untitled Note",
-              content,
-              color,
-              updatedAt: new Date().toISOString(),
-            }
+            ...note,
+            title: title || "Untitled Note",
+            content,
+            color,
+            updatedAt: new Date().toISOString(),
+          }
           : note,
       );
       localStorage.setItem("notes", JSON.stringify(updated));
@@ -303,12 +299,12 @@ export default function PrivoKeep() {
         notes.map((note) =>
           note.id === id
             ? {
-                ...note,
-                title: title || "Untitled Note",
-                content,
-                color,
-                updatedAt: new Date().toISOString(),
-              }
+              ...note,
+              title: title || "Untitled Note",
+              content,
+              color,
+              updatedAt: new Date().toISOString(),
+            }
             : note,
         ),
       );
@@ -512,203 +508,246 @@ export default function PrivoKeep() {
   if (!authUser) {
     return <AuthPanel onAuthSuccess={handleAuthSuccess} />;
   }
-    return (
-      <div className={`privokeep-container ${darkMode ? "dark" : "light"}`}>
-        <header className="privokeep-header">
-          <div className="header-left">
-            <div className="logo">
-              <span className="logo-icon">
-                <NoteIcon />
-              </span>
-              <h1>PrivoKeep</h1>
-            </div>
+  return (
+    <div className={`privokeep-container ${darkMode ? "dark" : "light"}`}>
+      <header className="privokeep-header">
+        <div className="header-left">
+          <div className="logo">
+            <span className="logo-icon">
+              <NoteIcon />
+            </span>
+            <h1>PrivoKeep</h1>
           </div>
-
-          <SearchBar
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
-
-          <div className="header-right">
-            <button
-              className="theme-toggle"
-              onClick={() => setDarkMode(!darkMode)}
-              title={darkMode ? "Light mode" : "Dark mode"}
-            >
-              {darkMode ? <SunIcon /> : <MoonIcon />}
-            </button>
-
-            <div className="user-menu">
-              <span className="user-name">
-                {authUser.name || authUser.email}
-              </span>
-              <button className="logout-btn" onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <div className="privokeep-main">
-          {/* Sidebar Filters */}
-          <aside className="privokeep-sidebar">
-            <div className="filter-section">
-              <h3>Notes</h3>
-              <button
-                className={`filter-btn ${!showArchived ? "active" : ""}`}
-                onClick={() => setShowArchived(false)}
-              >
-                All Notes
-              </button>
-              <button
-                className={`filter-btn ${showArchived ? "active" : ""}`}
-                onClick={() => setShowArchived(true)}
-              >
-                Archive
-              </button>
-
-              <button
-                className={`filter-btn ${showOnlyFavorites ? "active" : ""}`}
-                onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-              >
-                <HeartIcon /> Favorites
-              </button>
-
-              <button
-                className={`filter-btn ${showOnlyImages ? "active" : ""}`}
-                onClick={() => setShowOnlyImages(!showOnlyImages)}
-              >
-                With Images
-              </button>
-            </div>
-
-            <div className="filter-section">
-              <h3>Category</h3>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="category-select"
-              >
-                <option value="all">All Categories</option>
-                <option value="personal">Personal</option>
-                <option value="work">Work</option>
-                <option value="ideas">Ideas</option>
-                <option value="research">Research</option>
-              </select>
-            </div>
-
-            <div className="filter-section">
-              <h3>Priority</h3>
-              <select
-                value={selectedPriority}
-                onChange={(e) => setSelectedPriority(e.target.value)}
-                className="priority-select"
-              >
-                <option value="all">All Priorities</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-                <option value="urgent">Urgent</option>
-              </select>
-            </div>
-
-            <div className="filter-section">
-              <h3>Colors</h3>
-              <div className="color-filters">
-                <button
-                  className={`color-filter ${selectedColor === "all" ? "active" : ""}`}
-                  onClick={() => setSelectedColor("all")}
-                  title="All colors"
-                >
-                  All
-                </button>
-                {["yellow", "blue", "green", "pink", "purple"].map((color) => (
-                  <button
-                    key={color}
-                    className={`color-filter color-${color} ${
-                      selectedColor === color ? "active" : ""
-                    }`}
-                    onClick={() => setSelectedColor(color)}
-                    title={color}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Stacks Manager */}
-            <StackManager
-              stacks={stacks}
-              selectedStack={selectedStack}
-              onSelectStack={setSelectedStack}
-              onCreateStack={handleCreateStack}
-              onDeleteStack={handleDeleteStack}
-              onToggleExpanded={handleToggleStackExpanded}
-              onPinStack={handlePinStack}
-            />
-          </aside>
-
-          {/* Main Content */}
-          <main className="privokeep-content">
-            <div className="content-toolbar">
-              <NoteForm onSubmit={createNote} loading={loading} stacks={stacks} />
-              <AdvancedFilters
-                onFilterChange={handleFilterChange}
-                categories={["personal", "work", "ideas", "research"]}
-                priorities={["low", "medium", "high", "urgent"]}
-              />
-            </div>
-
-            {loading && filteredNotes.length === 0 ? (
-              <div className="loading">Loading your notes...</div>
-            ) : filteredNotes.length === 0 ? (
-              <div className="empty-state">
-                <div className="empty-icon">📭</div>
-                <p>
-                  {searchQuery
-                    ? "No notes found matching your search"
-                    : showArchived
-                      ? "No archived notes yet"
-                      : "No notes yet. Create your first note!"}
-                </p>
-              </div>
-            ) : (
-              <>
-                <NoteGrid
-                  notes={filteredNotes}
-                  onEdit={(note) => {
-                    setEditingId(note._id);
-                    setEditFormData(note);
-                  }}
-                  onDelete={deleteNote}
-                  onTogglePin={togglePin}
-                  onToggleArchive={toggleArchive}
-                  onToggleFavorite={handleToggleFavorite}
-                  onShare={(noteId) => {
-                    setSelectedNoteForShare(noteId);
-                    setShowShareModal(true);
-                  }}
-                  editingId={editingId}
-                  editFormData={editFormData}
-                  onSaveEdit={updateNote}
-                  onCancelEdit={() => {
-                    setEditingId(null);
-                    setEditFormData(null);
-                  }}
-                />
-                <ShareModal
-                  noteId={selectedNoteForShare}
-                  isOpen={showShareModal}
-                  onClose={() => setShowShareModal(false)}
-                  onShare={handleShare}
-                />
-              </>
-            )}
-          </main>
         </div>
 
-        {/* Toast Notification */}
-        {toast && <div className="toast">{toast}</div>}
+        <SearchBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+
+        <div className="header-right">
+          <button
+            className="theme-toggle"
+            onClick={() => setDarkMode(!darkMode)}
+            title={darkMode ? "Light mode" : "Dark mode"}
+          >
+            {darkMode ? <SunIcon /> : <MoonIcon />}
+          </button>
+
+          <div className="user-menu">
+            <span className="user-name">
+              {authUser.name || authUser.email}
+            </span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="privokeep-main">
+        {/* Sidebar Filters */}
+        <aside className="privokeep-sidebar">
+          <div className="filter-section">
+            <div
+              className="filter-section-header"
+              onClick={() => setCollapsedSections({ ...collapsedSections, notes: !collapsedSections.notes })}
+            >
+              <NoteIcon />
+              <h3>Notes</h3>
+              <ChevronDownIcon className={`chevron ${collapsedSections.notes ? "collapsed" : ""}`} />
+            </div>
+            {!collapsedSections.notes && (
+              <div className="filter-section-content">
+                <button
+                  className={`filter-btn ${!showArchived ? "active" : ""}`}
+                  onClick={() => setShowArchived(false)}
+                >
+                  <NoteIcon /> All Notes
+                </button>
+                <button
+                  className={`filter-btn ${showArchived ? "active" : ""}`}
+                  onClick={() => setShowArchived(true)}
+                >
+                  <ArchiveIcon /> Archive
+                </button>
+
+                <button
+                  className={`filter-btn ${showOnlyFavorites ? "active" : ""}`}
+                  onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
+                >
+                  <HeartIcon /> Favorites
+                </button>
+
+                <button
+                  className={`filter-btn ${showOnlyImages ? "active" : ""}`}
+                  onClick={() => setShowOnlyImages(!showOnlyImages)}
+                >
+                  <ImageIcon /> With Images
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="filter-section">
+            <div
+              className="filter-section-header"
+              onClick={() => setCollapsedSections({ ...collapsedSections, category: !collapsedSections.category })}
+            >
+              <FolderIcon />
+              <h3>Category</h3>
+              <ChevronDownIcon className={`chevron ${collapsedSections.category ? "collapsed" : ""}`} />
+            </div>
+            {!collapsedSections.category && (
+              <div className="filter-section-content">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="category-select"
+                >
+                  <option value="all">All Categories</option>
+                  <option value="personal">Personal</option>
+                  <option value="work">Work</option>
+                  <option value="ideas">Ideas</option>
+                  <option value="research">Research</option>
+                </select>
+              </div>
+            )}
+          </div>
+
+          <div className="filter-section">
+            <div
+              className="filter-section-header"
+              onClick={() => setCollapsedSections({ ...collapsedSections, priority: !collapsedSections.priority })}
+            >
+              <FlagIcon />
+              <h3>Priority</h3>
+              <ChevronDownIcon className={`chevron ${collapsedSections.priority ? "collapsed" : ""}`} />
+            </div>
+            {!collapsedSections.priority && (
+              <div className="filter-section-content">
+                <select
+                  value={selectedPriority}
+                  onChange={(e) => setSelectedPriority(e.target.value)}
+                  className="priority-select"
+                >
+                  <option value="all">All Priorities</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+            )}
+          </div>
+
+          <div className="filter-section">
+            <div
+              className="filter-section-header"
+              onClick={() => setCollapsedSections({ ...collapsedSections, colors: !collapsedSections.colors })}
+            >
+              <PaletteIcon />
+              <h3>Colors</h3>
+              <ChevronDownIcon className={`chevron ${collapsedSections.colors ? "collapsed" : ""}`} />
+            </div>
+            {!collapsedSections.colors && (
+              <div className="filter-section-content">
+                <div className="color-filters">
+                  <button
+                    className={`color-filter ${selectedColor === "all" ? "active" : ""}`}
+                    onClick={() => setSelectedColor("all")}
+                    title="All colors"
+                  >
+                    All
+                  </button>
+                  {["yellow", "blue", "green", "pink", "purple"].map((color) => (
+                    <button
+                      key={color}
+                      className={`color-filter color-${color} ${selectedColor === color ? "active" : ""
+                        }`}
+                      onClick={() => setSelectedColor(color)}
+                      title={color}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Stacks Manager */}
+          <StackManager
+            stacks={stacks}
+            selectedStack={selectedStack}
+            onSelectStack={setSelectedStack}
+            onCreateStack={handleCreateStack}
+            onDeleteStack={handleDeleteStack}
+            onToggleExpanded={handleToggleStackExpanded}
+            onPinStack={handlePinStack}
+          />
+        </aside>
+
+        {/* Main Content */}
+        <main className="privokeep-content">
+          <div className="content-toolbar">
+            <NoteForm onSubmit={createNote} loading={loading} stacks={stacks} />
+            <AdvancedFilters
+              onFilterChange={handleFilterChange}
+              categories={["personal", "work", "ideas", "research"]}
+              priorities={["low", "medium", "high", "urgent"]}
+            />
+          </div>
+
+          {loading && filteredNotes.length === 0 ? (
+            <div className="loading">Loading your notes...</div>
+          ) : filteredNotes.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">📭</div>
+              <p>
+                {searchQuery
+                  ? "No notes found matching your search"
+                  : showArchived
+                    ? "No archived notes yet"
+                    : "No notes yet. Create your first note!"}
+              </p>
+            </div>
+          ) : (
+            <>
+              <NoteGrid
+                notes={filteredNotes}
+                onEdit={(note) => {
+                  setEditingId(note._id);
+                  setEditFormData(note);
+                }}
+                onDelete={deleteNote}
+                onTogglePin={togglePin}
+                onToggleArchive={toggleArchive}
+                onToggleFavorite={handleToggleFavorite}
+                onShare={(noteId) => {
+                  setSelectedNoteForShare(noteId);
+                  setShowShareModal(true);
+                }}
+                editingId={editingId}
+                editFormData={editFormData}
+                onSaveEdit={updateNote}
+                onCancelEdit={() => {
+                  setEditingId(null);
+                  setEditFormData(null);
+                }}
+              />
+              <ShareModal
+                noteId={selectedNoteForShare}
+                isOpen={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                onShare={handleShare}
+              />
+            </>
+          )}
+        </main>
       </div>
-    );
-  }
+
+      {/* Toast Notification */}
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+}
 

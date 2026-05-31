@@ -11,12 +11,12 @@ const {
   toggleStackExpanded,
   getUnstackedNotes,
 } = require("../controllers/stackController");
-const { authenticate } = require("../middleware/auth");
+const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
 // Protect all routes with authentication
-router.use(authenticate);
+router.use(authMiddleware);
 
 // Stack CRUD routes
 router.post("/", createStack);
