@@ -25,7 +25,7 @@
 /* Dark Left Side */
 .auth-dark-side {
   flex: 1;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background-color: #16213e;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,6 +33,7 @@
   position: relative;
   padding: 40px;
   gap: 40px;
+  animation: bgPulse 10s ease-in-out infinite alternate;
 }
 
 .auth-theme-toggle {
@@ -45,6 +46,7 @@
   padding: 8px;
   border-radius: 50px;
   backdrop-filter: blur(10px);
+  animation: bgPulse 8s ease-in-out infinite alternate;
 }
 
 .theme-btn {
@@ -82,7 +84,7 @@
   width: 250px;
   height: 250px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #ff4757, #dc2626, #991b1b);
+  background-color: #ff4757;
   box-shadow:
     0 0 60px rgba(220, 38, 38, 0.4),
     inset -30px -30px 80px rgba(0, 0, 0, 0.4),
@@ -111,7 +113,7 @@
   width: 180px;
   height: 280px;
   bottom: -20px;
-  background: linear-gradient(to top, #000, transparent);
+  background-color: #000;
   clip-path: polygon(
     30% 0%,
     35% 10%,
@@ -153,6 +155,11 @@
   }
 }
 
+@keyframes bgPulse {
+  from { filter: brightness(0.97); }
+  to { filter: brightness(1.03); }
+}
+
 .auth-designer-credit {
   display: flex;
   align-items: center;
@@ -168,13 +175,14 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff4757, #dc2626);
+  background-color: #ff4757;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
   color: white;
   font-size: 12px;
+  animation: bgPulse 4s ease-in-out infinite alternate;
 }
 
 .designer-info p {
@@ -549,6 +557,8 @@
     max-width: 100%;
   }
 }
+@keyframes shake {  0%, 100% {
+    transform: translateX(0);
   }
   25% {
     transform: translateX(-5px);
@@ -557,7 +567,6 @@
     transform: translateX(5px);
   }
 }
-
 .auth-divider {
   display: flex;
   align-items: center;
@@ -629,7 +638,8 @@
   }
 
   .auth-container {
-    background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+    background-color: #4285f4;
+    animation: bgPulse 8s ease-in-out infinite alternate;
   }
 }
 

@@ -8,13 +8,14 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: var(--color-blue);
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s ease;
+  animation: bgPulse 4s ease-in-out infinite alternate;
 }
 
 .filters-toggle:hover {
@@ -47,6 +48,11 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes bgPulse {
+  from { filter: brightness(0.97); }
+  to { filter: brightness(1.03); }
 }
 
 .filters-header {

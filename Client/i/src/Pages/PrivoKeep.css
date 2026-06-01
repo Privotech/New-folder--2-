@@ -189,13 +189,14 @@ body,
   justify-content: space-between;
   padding: 14px 16px;
   cursor: pointer;
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  background-color: var(--bg-secondary);
+  animation: bgPulse 6s ease-in-out infinite alternate;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   gap: 12px;
 }
 
 .filter-section-header:hover {
-  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-purple) 100%);
+  background-color: var(--color-blue);
 }
 
 .filter-section-header:hover h3,
@@ -246,6 +247,11 @@ body,
   }
 }
 
+@keyframes bgPulse {
+  from { filter: brightness(0.97); }
+  to { filter: brightness(1.03); }
+}
+
 .filter-btn {
   display: flex;
   align-items: center;
@@ -277,11 +283,12 @@ body,
 }
 
 .filter-btn.active {
-  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-purple) 100%);
+background-color: var(--color-blue);
   color: white;
   border-color: transparent;
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+animation: bgPulse 3s ease-in-out infinite alternate;
 }
 
 .filter-btn svg {
@@ -336,23 +343,28 @@ body,
 }
 
 .color-filter.color-yellow {
-  background: linear-gradient(135deg, var(--color-yellow) 0%, #f9ab00 100%);
+  background-color: var(--color-yellow);
+  animation: bgPulse 4s ease-in-out infinite alternate;
 }
 
 .color-filter.color-blue {
-  background: linear-gradient(135deg, var(--color-blue) 0%, #1967d2 100%);
+  background-color: var(--color-blue);
+  animation: bgPulse 4s ease-in-out infinite alternate;
 }
 
 .color-filter.color-green {
-  background: linear-gradient(135deg, var(--color-green) 0%, #137333 100%);
+  background-color: var(--color-green);
+  animation: bgPulse 4s ease-in-out infinite alternate;
 }
 
 .color-filter.color-pink {
-  background: linear-gradient(135deg, var(--color-pink) 0%, #c5221f 100%);
+  background-color: var(--color-pink);
+  animation: bgPulse 4s ease-in-out infinite alternate;
 }
 
 .color-filter.color-purple {
-  background: linear-gradient(135deg, var(--color-purple) 0%, #9334e6 100%);
+  background-color: var(--color-purple);
+  animation: bgPulse 4s ease-in-out infinite alternate;
 }
 
 /* Select Dropdowns */

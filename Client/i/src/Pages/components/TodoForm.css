@@ -53,6 +53,11 @@
   }
 }
 
+@keyframes bgPulse {
+  from { filter: brightness(0.97); }
+  to { filter: brightness(1.03); }
+}
+
 .form-textarea {
   resize: vertical;
   min-height: 60px;
@@ -60,11 +65,8 @@
 
 .submit-btn {
   padding: 12px 20px;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-dark)
-  );
+  background-color: var(--primary-color);
+  animation: bgPulse 4s ease-in-out infinite alternate;
   color: white;
   border: none;
   border-radius: 8px;
@@ -138,6 +140,7 @@
 .toggle-advanced:hover {
   background: var(--primary-color);
   color: white;
+  animation: bgPulse 4s ease-in-out infinite alternate;
   border-color: var(--primary-color);
 }
 

@@ -29,12 +29,8 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: rgba(255, 255, 255, 0.12);
+  opacity: 0.9;
   transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
@@ -124,9 +120,9 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+  background-color: var(--primary-color);
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: progressFill 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: progressFill 0.5s cubic-bezier(0.4, 0, 0.2, 1), bgPulse 6s ease-in-out infinite alternate;
 }
 
 @keyframes progressFill {
@@ -136,6 +132,11 @@
   to {
     width: 100%;
   }
+}
+
+@keyframes bgPulse {
+  from { filter: brightness(0.97); }
+  to { filter: brightness(1.03); }
 }
 
 .progress-text {

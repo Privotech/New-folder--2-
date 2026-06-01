@@ -231,14 +231,14 @@ export default function PrivoKeep() {
     }
   };
 
-  const createNote = (noteData) => {
-    // Handle both old format and new format
-    const noteContent =
-      typeof noteData === "string" ? arguments[1] : noteData.content;
-    const noteColor =
-      typeof noteData === "string" ? arguments[2] : noteData.color || "yellow";
+  const createNote = (noteData, contentArg, colorArg) => {
+    // Support both signature styles: createNote(noteObj) and createNote(title, content, color)
+    const isStringSignature = typeof noteData === "string";
+    const noteContent = isStringSignature ? contentArg : noteData?.content;
+    const noteColor = isStringSignature ? colorArg : noteData?.color || "yellow";
+    const title = isStringSignature ? noteData : noteData?.title || "Untitled Note";
 
-    if (!noteData.title?.trim() && !noteContent?.trim()) {
+    if (!title?.trim() && !noteContent?.trim()) {
       showToast("Note cannot be empty", "error");
       return;
     }
@@ -247,22 +247,22 @@ export default function PrivoKeep() {
       const newNote = {
         _id: Date.now().toString(),
         userId: authUser?.id,
-        title: noteData.title || "Untitled Note",
-        content: noteContent || noteData.content,
+        title: title,
+        content: noteContent || "",
         color: noteColor,
-        category: noteData.category || "personal",
-        priority: noteData.priority || "medium",
-        tags: noteData.tags || [],
-        images: noteData.images || [],
+        category: noteData?.category || "personal",
+        priority: noteData?.priority || "medium",
+        tags: noteData?.tags || [],
+        images: noteData?.images || [],
         isPinned: false,
         isArchived: false,
         isFavorited: false,
-        reminder: noteData.dueDate
+        reminder: noteData?.dueDate
           ? {
-            isSet: true,
-            dueDate: noteData.dueDate,
-            frequency: "once",
-          }
+              isSet: true,
+              dueDate: noteData.dueDate,
+              frequency: "once",
+            }
           : { isSet: false },
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -283,28 +283,28 @@ export default function PrivoKeep() {
     try {
       const allNotes = JSON.parse(localStorage.getItem("notes") || "[]");
       const updated = allNotes.map((note) =>
-        note.id === id
+        (note._id === id || note.id === id)
           ? {
-            ...note,
-            title: title || "Untitled Note",
-            content,
-            color,
-            updatedAt: new Date().toISOString(),
-          }
-          : note,
-      );
-      localStorage.setItem("notes", JSON.stringify(updated));
-
-      setNotes(
-        notes.map((note) =>
-          note.id === id
-            ? {
               ...note,
               title: title || "Untitled Note",
               content,
               color,
               updatedAt: new Date().toISOString(),
             }
+          : note,
+      );
+      localStorage.setItem("notes", JSON.stringify(updated));
+
+      setNotes(
+        notes.map((note) =>
+          (note._id === id || note.id === id)
+            ? {
+                ...note,
+                title: title || "Untitled Note",
+                content,
+                color,
+                updatedAt: new Date().toISOString(),
+              }
             : note,
         ),
       );
@@ -321,10 +321,10 @@ export default function PrivoKeep() {
     if (window.confirm("Are you sure you want to delete this note?")) {
       try {
         const allNotes = JSON.parse(localStorage.getItem("notes") || "[]");
-        const filtered = allNotes.filter((note) => note.id !== id);
+        const filtered = allNotes.filter((note) => !(note._id === id || note.id === id));
         localStorage.setItem("notes", JSON.stringify(filtered));
 
-        setNotes(notes.filter((note) => note.id !== id));
+        setNotes(notes.filter((note) => !(note._id === id || note.id === id)));
         showToast("Note deleted successfully", "success");
       } catch (error) {
         console.error("Error deleting note:", error);
@@ -337,13 +337,13 @@ export default function PrivoKeep() {
     try {
       const allNotes = JSON.parse(localStorage.getItem("notes") || "[]");
       const updated = allNotes.map((note) =>
-        note.id === id ? { ...note, isPinned: !note.isPinned } : note,
+        (note._id === id || note.id === id) ? { ...note, isPinned: !note.isPinned } : note,
       );
       localStorage.setItem("notes", JSON.stringify(updated));
 
       setNotes(
         notes.map((note) =>
-          note.id === id ? { ...note, isPinned: !note.isPinned } : note,
+          (note._id === id || note.id === id) ? { ...note, isPinned: !note.isPinned } : note,
         ),
       );
     } catch (error) {
@@ -355,13 +355,13 @@ export default function PrivoKeep() {
     try {
       const allNotes = JSON.parse(localStorage.getItem("notes") || "[]");
       const updated = allNotes.map((note) =>
-        note.id === id ? { ...note, isArchived: !note.isArchived } : note,
+        (note._id === id || note.id === id) ? { ...note, isArchived: !note.isArchived } : note,
       );
       localStorage.setItem("notes", JSON.stringify(updated));
 
       setNotes(
         notes.map((note) =>
-          note.id === id ? { ...note, isArchived: !note.isArchived } : note,
+          (note._id === id || note.id === id) ? { ...note, isArchived: !note.isArchived } : note,
         ),
       );
     } catch (error) {

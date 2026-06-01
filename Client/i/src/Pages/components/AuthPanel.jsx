@@ -112,10 +112,10 @@ export default function AuthPanel({ onAuthSuccess }) {
           </div>
 
           <div className="auth-designer-credit">
-            <div className="designer-avatar">NK</div>
+            <div className="designer-avatar">OP</div>
             <div className="designer-info">
-              <p className="designer-name">Noor Nazim</p>
-              <p className="designer-title">UI/UX Designer</p>
+              <p className="designer-name">Oyegbile privilege</p>
+              <p className="designer-title">Software developper</p>
             </div>
           </div>
         </div>
@@ -123,7 +123,7 @@ export default function AuthPanel({ onAuthSuccess }) {
         {/* Light Right Side */}
         <div className="auth-right-side">
           <div className="auth-header">
-            <h1 className="auth-brand">NIGHTSTAR</h1>
+            <h1 className="auth-brand">Privokeep</h1>
             <div className="auth-language-selector">
               <button className="lang-btn" title="Language selector">
                 <GlobeIcon />
@@ -137,7 +137,7 @@ export default function AuthPanel({ onAuthSuccess }) {
               {isRegister ? "Create Account" : "Welcome Back!"}
             </h2>
             <p className="auth-subtitle">
-              {isRegister ? "welcome to Nightstar" : "welcome to Nightstar"}
+              {isRegister ? "welcome to Privokeep" : "welcome to Privokeep"}
             </p>
 
             <form className="auth-form" onSubmit={handleSubmit}>
