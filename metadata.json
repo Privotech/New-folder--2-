@@ -1,0 +1,8 @@
+{
+  "name": "PrivoKeep",
+  "description": "Your Personal Note-Taking and Task Management Platform",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
